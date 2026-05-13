@@ -3,25 +3,93 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-inter: 'Inter', system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FFFFFF;
+  color: #1C1410;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@keyframes kenburns {
+  0%   { transform: scale(1)    translate(0%, 0%); }
+  25%  { transform: scale(1.06) translate(-1%, -1%); }
+  50%  { transform: scale(1.1)  translate(1%, 0.5%); }
+  75%  { transform: scale(1.06) translate(0.5%, -1.5%); }
+  100% { transform: scale(1)    translate(0%, 0%); }
+}
+
+.animate-kenburns {
+  animation: kenburns 14s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* ─── Print stijl ──────────────────────────────────────────── */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  header, footer, nav,
+  .print\:hidden {
+    display: none !important;
+  }
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  /* Achtergronden wit, tekst zwart */
+  .bg-warm, .bg-warm-bg, .bg-warm-bg\/60, .bg-white,
+  .bg-warm\/10, .bg-warm-bg\/40 {
+    background: white !important;
+  }
+  .text-warm, .text-espresso, .text-cream {
+    color: black !important;
+  }
+  .text-muted, .text-muted\/70 {
+    color: #555 !important;
+  }
+  [class*='border'] {
+    border-color: #ccc !important;
+  }
+  /* Pagina marges */
+  @page {
+    margin: 1.5cm;
+  }
+  /* Forceer page breaks netjes */
+  h1, h2, h3 {
+    page-break-after: avoid;
   }
 }
