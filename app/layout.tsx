@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import BottomNav from '@/components/BottomNav'
+import PasswordGate from '@/components/PasswordGate'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -56,10 +57,12 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#1C1410" />
       </head>
       <body className="bg-cream min-h-screen">
-        <main className="max-w-lg mx-auto pb-20 min-h-screen">
-          {children}
-        </main>
-        <BottomNav />
+        <PasswordGate>
+          <main className="max-w-lg mx-auto pb-20 min-h-screen">
+            {children}
+          </main>
+          <BottomNav />
+        </PasswordGate>
       </body>
     </html>
   )
