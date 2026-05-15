@@ -19,11 +19,9 @@ import {
 } from '@/lib/labelGenerator'
 import { isProUser } from '@/lib/pro'
 import { getSettings } from '@/lib/settings'
-import { getCustomLogo } from '@/lib/branding'
 import { STARTER_RECIPES } from '@/lib/recipes'
 import { getCustomRecipes } from '@/lib/customRecipes'
 import type { Recipe } from '@/lib/types'
-import Image from 'next/image'
 
 type Mode = 'eenvoudig' | 'eu'
 
