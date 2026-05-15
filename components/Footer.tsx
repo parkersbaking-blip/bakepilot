@@ -88,15 +88,24 @@ export default function Footer() {
         </div>
       </nav>
 
-      {/* Spacer + voorwaarden */}
+      {/* Spacer + voorwaarden + privacy */}
       <div className="h-20" />
-      <div className="px-4 pb-2 text-center">
+      <div className="px-4 pb-2 text-center space-x-2">
         <Link
           href="/voorwaarden"
           className="text-muted/50 text-[11px] underline underline-offset-2 hover:text-muted transition-colors"
         >
-          Voorwaarden · © 2026 BakePilot
+          Voorwaarden
         </Link>
+        <span className="text-muted/30 text-[11px]">·</span>
+        <Link
+          href="/privacy"
+          className="text-muted/50 text-[11px] underline underline-offset-2 hover:text-muted transition-colors"
+        >
+          Privacy
+        </Link>
+        <span className="text-muted/30 text-[11px]">·</span>
+        <span className="text-muted/50 text-[11px]">© 2026 BakePilot</span>
       </div>
     </>
   )
