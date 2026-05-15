@@ -560,10 +560,12 @@ export default function LabelsPage() {
                         </div>
 
                         <p className="text-muted text-[10px] italic leading-relaxed">
-                          ⚠️ Waarden zijn geschat o.b.v. NEVO/USDA-database.
-                          Voor commerciële verkoop op grote schaal raden we
-                          lab-analyse aan. Bakker blijft eindverantwoordelijk
-                          voor declaratie op het etiket.
+                          ⚠️ Waarden zijn een indicatieve schatting op basis
+                          van standaard voedingswaarden voor de gekozen
+                          ingrediënten. Voor commerciële verkoop op grote
+                          schaal raden we lab-analyse aan. De bakker blijft
+                          eindverantwoordelijk voor de declaratie op het
+                          etiket.
                         </p>
                       </>
                     )}

@@ -2,16 +2,14 @@
  * Voedingswaarde-database + berekening voor EU-conforme etiketten
  * volgens verordening 1169/2011 (FIC) bijlage XV.
  *
- * Waarden per 100g zijn afgeleid van NEVO-online (RIVM), USDA FoodData
- * Central en BLS (Bundeslebensmittelschlüssel). Voor de meeste ruwe
- * grondstoffen lopen die bronnen <5% uiteen, dus deze tabel is een
- * solide uitgangspunt voor thuisbakkers en kleine bakkerijen.
+ * Waarden per 100g zijn standaard referentiewaarden voor ruwe
+ * grondstoffen. Voor de meeste basisingrediënten zijn deze breed
+ * gedocumenteerd en consistent — dit geeft een solide uitgangspunt
+ * voor thuisbakkers en kleine bakkerijen.
  *
  * ⚠️  De bakker blijft eindverantwoordelijk voor wat op het etiket
  * komt. Voor commerciële verkoop op grote schaal raden we lab-analyse
- * of NEVO-controle aan (nevo-online.rivm.nl).
- *
- * Bron: NEVO 2023, USDA FoodData Central
+ * van het eindproduct aan.
  */
 
 import type { Ingredient } from './types'
