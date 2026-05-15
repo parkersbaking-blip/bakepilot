@@ -22,6 +22,8 @@ import { getSettings } from '@/lib/settings'
 import { STARTER_RECIPES } from '@/lib/recipes'
 import { getCustomRecipes } from '@/lib/customRecipes'
 import type { Recipe } from '@/lib/types'
+import { calculateRecipeNutrition } from '@/lib/nutrition'
+import NutritionTable from '@/components/NutritionTable'
 
 type Mode = 'eenvoudig' | 'eu'
 
@@ -47,6 +49,8 @@ export default function LabelsPage() {
   )
   const [lotNumber, setLotNumber] = useState('')
   const [manualAllergens, setManualAllergens] = useState<AllergenId[]>([])
+  const [showNutrition, setShowNutrition] = useState(true)
+  const [waterLossPercent, setWaterLossPercent] = useState(0)
 
   useEffect(() => {
     setPro(isProUser())
@@ -162,6 +166,11 @@ export default function LabelsPage() {
     if (!productionDate || !shelfLifeDays) return 'DD-MM-JJJJ'
     return calculateBestBeforeDate(productionDate, shelfLifeDays)
   }, [productionDate, shelfLifeDays])
+
+  const nutrition = useMemo(() => {
+    if (!selectedRecipe) return null
+    return calculateRecipeNutrition(selectedRecipe.ingredients, waterLossPercent)
+  }, [selectedRecipe, waterLossPercent])
 
   function handleSwitchMode(newMode: Mode) {
     if (newMode === 'eu' && !pro) {
@@ -493,6 +502,73 @@ export default function LabelsPage() {
                     </div>
                   </div>
 
+                  {/* Voedingswaarde sectie */}
+                  <div className="bg-white border border-warm-bg shadow-sm rounded-3xl p-5 space-y-4 print:hidden">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-warm text-sm font-bold uppercase tracking-wider">
+                        5. Voedingswaarde
+                      </h2>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={showNutrition}
+                          onChange={(e) => setShowNutrition(e.target.checked)}
+                          className="w-4 h-4 accent-warm"
+                        />
+                        <span className="text-xs text-muted font-medium">
+                          Toon op etiket
+                        </span>
+                      </label>
+                    </div>
+
+                    {showNutrition && nutrition && (
+                      <>
+                        <NumberField
+                          label="Gewichtsverlies bij bakken"
+                          unit="%"
+                          min={0}
+                          value={waterLossPercent}
+                          onChange={(v) => setWaterLossPercent(Math.min(Math.max(v || 0, 0), 30))}
+                        />
+                        <div className="bg-warm-bg/60 rounded-xl p-3 text-xs text-espresso leading-relaxed">
+                          <p className="font-bold text-warm mb-1">💡 Richtlijnen</p>
+                          <p className="text-muted">
+                            <strong>Brood:</strong> ~10% (water verdampt)<br />
+                            <strong>Cake/gebak:</strong> ~5%<br />
+                            <strong>Koekjes:</strong> ~3-5%<br />
+                            <strong>Geen baking:</strong> 0%
+                          </p>
+                        </div>
+
+                        {nutrition.unmatchedIngredients.length > 0 && (
+                          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
+                            <p className="text-amber-900 text-xs font-bold uppercase mb-1">
+                              ⚠️ Niet gevonden in database
+                            </p>
+                            <p className="text-amber-900 text-xs">
+                              {nutrition.unmatchedIngredients.join(', ')}
+                            </p>
+                            <p className="text-amber-800 text-[10px] mt-2 italic">
+                              Deze ingrediënten tellen niet mee in de berekening.
+                              De waarden zijn dus een onderschatting.
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="bg-warm-bg/40 rounded-xl p-3">
+                          <NutritionTable nutrition={nutrition} compact />
+                        </div>
+
+                        <p className="text-muted text-[10px] italic leading-relaxed">
+                          ⚠️ Waarden zijn geschat o.b.v. NEVO/USDA-database.
+                          Voor commerciële verkoop op grote schaal raden we
+                          lab-analyse aan. Bakker blijft eindverantwoordelijk
+                          voor declaratie op het etiket.
+                        </p>
+                      </>
+                    )}
+                  </div>
+
                   {/* Etiket-preview (print-target) */}
                   <div className="space-y-3">
                     <h2 className="text-espresso/70 text-xs font-semibold uppercase tracking-wider print:hidden">
@@ -565,6 +641,10 @@ export default function LabelsPage() {
                           {shelfLifeDays} {shelfLifeDays === 1 ? 'dag' : 'dagen'}{' '}
                           houdbaar.
                         </p>
+
+                        {showNutrition && nutrition && (
+                          <NutritionTable nutrition={nutrition} compact />
+                        )}
 
                         <div className="pt-2 border-t border-warm-bg">
                           <p className="text-espresso text-xs font-bold">
