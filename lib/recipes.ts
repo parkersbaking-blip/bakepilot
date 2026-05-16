@@ -484,7 +484,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 180,
     activeLaborMinutes: 25,
     suggestedPackagingCost: 0.05,
-    photo: 'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=600&q=80',
+    photo: '/recipes/tijgerbrood.webp',
     description:
       'Zacht wit brood met de iconische krokante tijgerprint van rijstebloem-pasta op de korst.',
     ingredients: [
@@ -519,7 +519,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 240,
     activeLaborMinutes: 15,
     suggestedPackagingCost: 0.10,
-    photo: 'https://images.unsplash.com/photo-1612966292330-cbe1f4b9f8ab?w=600&q=80',
+    photo: '/recipes/focaccia.webp',
     description:
       'Italiaans vlak brood met luchtige binnenkant, krokante korst en flink wat olijfolie. Perfect met rozemarijn en zeezout.',
     ingredients: [
@@ -554,7 +554,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 60,
     activeLaborMinutes: 30,
     suggestedPackagingCost: 0.15,
-    photo: 'https://images.unsplash.com/photo-1572383672419-ab35444a6934?w=600&q=80',
+    photo: '/recipes/appelflap.jpeg',
     description:
       'Klassieke Nederlandse appelflap: bladerdeeg gevuld met zachte kaneel-appel en bedekt met grove suiker.',
     ingredients: [
@@ -588,7 +588,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 120,
     activeLaborMinutes: 45,
     suggestedPackagingCost: 0.25,
-    photo: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80',
+    photo: '/recipes/tompoes.png',
     description:
       'Hollandse klassieker met twee lagen knapperig bladerdeeg, gele banketbakkersroom en roze glazuur.',
     ingredients: [
@@ -623,7 +623,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 150,
     activeLaborMinutes: 60,
     suggestedPackagingCost: 0.30,
-    photo: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=600&q=80',
+    photo: '/recipes/bossche-bol.png',
     description:
       'Brabantse trots: een grote soes gevuld met slagroom en bedekt met een dikke laag pure chocolade.',
     ingredients: [
@@ -658,7 +658,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 150,
     activeLaborMinutes: 40,
     suggestedPackagingCost: 0.12,
-    photo: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&q=80',
+    photo: '/recipes/suikerdonut.png',
     description:
       'Luchtige gefrituurde donuts met een kaneel-suiker laagje. Klassiek én onweerstaanbaar.',
     ingredients: [
@@ -698,7 +698,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 75,
     activeLaborMinutes: 20,
     suggestedPackagingCost: 0.08,
-    photo: 'https://images.unsplash.com/photo-1610450949065-1f2841536c88?w=600&q=80',
+    photo: '/recipes/brownie.jpg',
     description:
       'Donkere, plakkerig-zachte brownie met een dunne krokante laag bovenop. Maximale chocolade-intensiteit.',
     ingredients: [
@@ -733,7 +733,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 90,
     activeLaborMinutes: 20,
     suggestedPackagingCost: 0.20,
-    photo: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=600&q=80',
+    photo: '/recipes/citroencake.jpg',
     description:
       'Frisse, vochtige cake met geraspte citroen in het beslag en een citroen-suikerglazuur erover.',
     ingredients: [
@@ -771,7 +771,7 @@ export const STARTER_RECIPES: Recipe[] = [
     prepTime: 1500,
     activeLaborMinutes: 30,
     suggestedPackagingCost: 0.05,
-    photo: 'https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=600&q=80',
+    photo: '/recipes/speculaas.png',
     description:
       'Knapperige Nederlandse koekjes met de typische speculaaskruiden. 24 uur rust geeft de diepste smaak.',
     ingredients: [
