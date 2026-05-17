@@ -37,7 +37,7 @@ function quantityInPriceUnit(qty: number, qtyUnit: Unit, priceUnit: PriceUnit): 
   }
 }
 
-function calcIngredientCost(ingredient: Ingredient, scaledQty: number): number {
+export function calcIngredientCost(ingredient: Ingredient, scaledQty: number): number {
   const priceUnit = ingredient.priceUnit ?? defaultPriceUnit(ingredient.unit)
   const qty = quantityInPriceUnit(scaledQty, ingredient.unit, priceUnit)
   return qty * ingredient.pricePerUnit
