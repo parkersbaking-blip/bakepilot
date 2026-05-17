@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Header from '@/components/Header'
-import BackBar from '@/components/BackBar'
 import Footer from '@/components/Footer'
 import {
   getSavedCalculations,
@@ -63,7 +62,6 @@ export default function BerekeningenPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header showLogo title="Berekeningen" />
-      <BackBar />
 
       <div className="px-4 pt-6 pb-4 space-y-5">
         <motion.div

@@ -2,24 +2,56 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 interface HeaderProps {
   title?: string
   showLogo?: boolean
   right?: React.ReactNode
+  /** Forceer terug-knop verbergen (bv. op /home, /welkom, /). Default: auto. */
+  hideBack?: boolean
 }
 
-export default function Header({ title, showLogo = true, right }: HeaderProps) {
+// Pagina's waar GEEN terug-knop nodig is (top-level routes)
+const NO_BACK_PATHS = ['/', '/home', '/welkom']
+
+export default function Header({
+  title,
+  showLogo = true,
+  right,
+  hideBack = false,
+}: HeaderProps) {
+  const router = useRouter()
   const pathname = usePathname()
   const onSettingsPage = pathname === '/instellingen'
+  const showBack = !hideBack && !NO_BACK_PATHS.includes(pathname || '')
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-warm-bg px-4 py-3 print:hidden">
-      <div className="flex items-center justify-between max-w-lg mx-auto">
-        <div className="flex items-center gap-3">
-          {showLogo && (
-            <Link href="/home">
+      <div className="flex items-center justify-between max-w-lg mx-auto gap-2">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          {showBack && (
+            <button
+              onClick={() => router.back()}
+              aria-label="Terug"
+              className="w-9 h-9 rounded-full bg-warm-bg/60 hover:bg-warm-bg active:scale-95 flex items-center justify-center transition-all flex-shrink-0"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8B4513"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+          )}
+          {showLogo && !showBack && (
+            <Link href="/home" className="flex-shrink-0">
               <Image
                 src="/image-1777594035959.jpg"
                 alt="Parker's Baking logo"
@@ -30,10 +62,12 @@ export default function Header({ title, showLogo = true, right }: HeaderProps) {
             </Link>
           )}
           {title && (
-            <span className="text-espresso font-semibold text-base">{title}</span>
+            <span className="text-espresso font-semibold text-base truncate">
+              {title}
+            </span>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           {right}
           {!onSettingsPage && (
             <Link

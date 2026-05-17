@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Header from '@/components/Header'
-import BackBar from '@/components/BackBar'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import NumberField from '@/components/NumberField'
@@ -187,7 +186,6 @@ export default function LabelsPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header showLogo title="Etiketten" />
-      <BackBar />
 
       <div className="px-4 pt-6 pb-4 space-y-6">
         <motion.div

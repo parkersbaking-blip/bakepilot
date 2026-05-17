@@ -7,7 +7,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Header from '@/components/Header'
-import BackBar from '@/components/BackBar'
 import Footer from '@/components/Footer'
 import {
   getOrders,
@@ -273,7 +272,6 @@ export default function AgendaPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header showLogo title="Agenda" />
-      <BackBar />
 
       <div className="px-4 pt-5 pb-6 space-y-5">
         {/* DATUM + VIEW SWITCHER */}

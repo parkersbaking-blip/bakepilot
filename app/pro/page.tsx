@@ -5,7 +5,6 @@ import type { Variants } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
-import BackBar from '@/components/BackBar'
 import Button from '@/components/Button'
 import Footer from '@/components/Footer'
 import { isProUser, setProUser } from '@/lib/pro'
@@ -47,7 +46,6 @@ export default function ProPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header showLogo title="Pro" />
-      <BackBar />
 
       <div className="px-4 pt-6 pb-4 space-y-6">
         {/* Hero */}

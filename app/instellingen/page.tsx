@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Header from '@/components/Header'
-import BackBar from '@/components/BackBar'
 import Footer from '@/components/Footer'
 import Input from '@/components/Input'
 import NumberField from '@/components/NumberField'
@@ -103,7 +102,6 @@ export default function InstellingenPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header showLogo title="Instellingen" />
-      <BackBar />
 
       <div className="px-4 pt-6 pb-4 space-y-6">
         <motion.div

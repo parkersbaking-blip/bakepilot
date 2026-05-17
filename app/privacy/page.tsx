@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Header from '@/components/Header'
-import BackBar from '@/components/BackBar'
 import Footer from '@/components/Footer'
 
 const SECTIONS = [
@@ -68,7 +67,6 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-cream">
       <Header showLogo title="Privacyverklaring" />
-      <BackBar />
 
       <div className="px-4 pt-6 pb-4 space-y-6">
         <motion.div

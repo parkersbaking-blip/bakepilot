@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Header from '@/components/Header'
-import BackBar from '@/components/BackBar'
 import RecipeCard from '@/components/RecipeCard'
 import Footer from '@/components/Footer'
 import { STARTER_RECIPES } from '@/lib/recipes'
@@ -61,7 +60,6 @@ export default function ReceptenPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header showLogo title="Recepten" />
-      <BackBar />
 
       <div className="px-4 pt-6 pb-4 space-y-5">
         <motion.div

@@ -12,7 +12,6 @@ import { useRouter, useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Header from '@/components/Header'
-import BackBar from '@/components/BackBar'
 import Footer from '@/components/Footer'
 import NumberField from '@/components/NumberField'
 import Button from '@/components/Button'
@@ -104,7 +103,6 @@ export default function RecipeDetailPage() {
     return (
       <div className="min-h-screen bg-white">
         <Header showLogo title="Laden..." />
-      <BackBar />
         <div className="p-6 text-center">
           <div className="inline-block w-8 h-8 border-2 border-warm border-t-transparent rounded-full animate-spin" />
         </div>
