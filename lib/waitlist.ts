@@ -3,7 +3,16 @@
  * Bewaard in localStorage; later vervangen door Supabase tabel.
  */
 
-export type UserSegment = 'hobby' | 'bijverdienste' | 'professioneel' | 'onbekend'
+export type UserSegment = 'hobby' | 'kleinverkoop' | 'bakkerij' | 'onbekend'
+
+function migrateSegment(value: unknown): UserSegment | undefined {
+  if (value === 'bijverdienste') return 'kleinverkoop'
+  if (value === 'professioneel') return 'bakkerij'
+  if (value === 'hobby' || value === 'kleinverkoop' || value === 'bakkerij' || value === 'onbekend') {
+    return value
+  }
+  return undefined
+}
 
 export interface WaitlistEntry {
   id: string
@@ -23,7 +32,9 @@ export function getWaitlist(): WaitlistEntry[] {
   if (!isClient()) return []
   try {
     const raw = localStorage.getItem(KEY)
-    return raw ? (JSON.parse(raw) as WaitlistEntry[]) : []
+    if (!raw) return []
+    const entries = JSON.parse(raw) as WaitlistEntry[]
+    return entries.map((e) => ({ ...e, segment: migrateSegment(e.segment) }))
   } catch {
     return []
   }

@@ -230,8 +230,8 @@ export default function InstellingenPage() {
             <p className="text-muted">
               <strong>Hobby/zelf bakken:</strong> €0–€10 (je rekent je eigen tijd
               niet of weinig)<br />
-              <strong>Bijverdienste / verkopen:</strong> €12–€18<br />
-              <strong>Professionele bakker:</strong> €18–€25 (zelf-werkgever)<br />
+              <strong>Kleinverkoop:</strong> €12–€18<br />
+              <strong>Bakkerij:</strong> €18–€25 (zelf-werkgever)<br />
               <strong>Bakker met personeel:</strong> €22–€35 (incl. werkgeverslast)
             </p>
           </div>

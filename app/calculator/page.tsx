@@ -20,7 +20,7 @@ import {
   clearSelectedCalculation,
 } from '@/lib/storage'
 import { generateCalculationPDF } from '@/lib/pdf'
-import { getSettings } from '@/lib/settings'
+import { getSettings, type UserType } from '@/lib/settings'
 import { saveCustomRecipe, newCustomRecipeId } from '@/lib/customRecipes'
 import type { Ingredient, Calculation, CalculationResult, Recipe } from '@/lib/types'
 
@@ -45,6 +45,19 @@ const DEFAULT_FORM = {
   vatPercentage: 9,
 }
 
+const LABOR_HINT: Record<NonNullable<UserType>, string> = {
+  hobby: 'Hoe lang ben je actief bezig met deze batch.',
+  kleinverkoop:
+    'Actieve werktijd voor de hele batch (rijstijd telt niet mee). Meer broden tegelijk = lagere kostprijs per stuk.',
+  bakkerij:
+    'Actieve werktijd voor de hele batch — denk aan machinaal kneden, portioneren en afbakken. Rijstijd telt niet mee.',
+}
+
+const YIELD_HINT: Partial<Record<NonNullable<UserType>, string>> = {
+  kleinverkoop: 'Tip: 12–24 stuks per batch is realistisch voor kleinverkoop.',
+  bakkerij: 'Tip: bakkerijen werken vaak met 50–200 stuks per batch.',
+}
+
 export default function CalculatorPage() {
   const [isNewRecipeMode, setIsNewRecipeMode] = useState(false)
   useEffect(() => {
@@ -62,6 +75,7 @@ export default function CalculatorPage() {
   const [proModalOpen, setProModalOpen] = useState(false)
   const [proModalFeature, setProModalFeature] = useState('Download als PDF')
   const [recipeSaveFlash, setRecipeSaveFlash] = useState(false)
+  const [userType, setUserType] = useState<UserType | undefined>(undefined)
 
   const flourInRecipe = detectFlourGrams(ingredients)
 
@@ -79,6 +93,7 @@ export default function CalculatorPage() {
     const settings = getSettings()
     const savedCalc = getSelectedCalculation()
     const recipe = getSelectedRecipe()
+    setUserType(settings.userType)
 
     // Prioriteit: opgeslagen berekening → recept → settings
     if (savedCalc) {
@@ -294,6 +309,11 @@ export default function CalculatorPage() {
               Schaalfactor: ×{(form.desiredYield / form.baseYield).toFixed(2)}
             </div>
           )}
+          {userType && YIELD_HINT[userType] && (
+            <p className="text-muted text-xs leading-relaxed">
+              {YIELD_HINT[userType]}
+            </p>
+          )}
         </motion.div>
 
         {/* Ingredients */}
@@ -373,6 +393,11 @@ export default function CalculatorPage() {
             value={form.laborMinutes}
             onChange={(v) => updateForm('laborMinutes', v)}
           />
+          {userType && (
+            <p className="text-muted text-xs leading-relaxed -mt-1">
+              {LABOR_HINT[userType]}
+            </p>
+          )}
         </motion.div>
 
         {/* Pricing */}
@@ -458,6 +483,21 @@ export default function CalculatorPage() {
                   index={3}
                 />
               </div>
+
+              {userType && userType !== 'hobby' &&
+                result.totalCost > 0 &&
+                form.desiredYield < 10 &&
+                result.totalLaborCost / result.totalCost > 0.6 && (
+                  <div className="bg-warm-bg border border-warm/30 rounded-2xl p-4 flex items-start gap-3">
+                    <span className="text-xl flex-shrink-0">⚠️</span>
+                    <div className="text-sm leading-relaxed">
+                      <p className="text-warm font-bold mb-1">Arbeid is {Math.round((result.totalLaborCost / result.totalCost) * 100)}% van je kostprijs</p>
+                      <p className="text-espresso text-xs">
+                        Bij grotere batches daalt de arbeidskost per stuk fors. Probeer eens 20–50 stuks per batch in te vullen — dezelfde werktijd, veel meer broden.
+                      </p>
+                    </div>
+                  </div>
+                )}
 
               <div className="bg-white border border-warm-bg shadow-sm rounded-3xl p-5 space-y-3">
                 <h3 className="text-warm text-xs font-bold uppercase tracking-wider">Kostenverdeling</h3>

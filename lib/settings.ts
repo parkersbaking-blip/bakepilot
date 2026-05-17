@@ -6,7 +6,7 @@
  * Opslag: localStorage (key: bakepilot_settings).
  */
 
-export type UserType = 'hobby' | 'side-hustle' | 'professional'
+export type UserType = 'hobby' | 'kleinverkoop' | 'bakkerij'
 export type BakingFrequency = 'dagelijks' | 'wekelijks' | 'maandelijks' | 'incidenteel'
 
 export interface UserSettings {
@@ -34,13 +34,25 @@ function isClient(): boolean {
   return typeof window !== 'undefined'
 }
 
+// Migreer oude userType-IDs naar de nieuwe namen
+function migrateUserType(value: unknown): UserType | undefined {
+  if (value === 'side-hustle') return 'kleinverkoop'
+  if (value === 'professional') return 'bakkerij'
+  if (value === 'hobby' || value === 'kleinverkoop' || value === 'bakkerij') return value
+  return undefined
+}
+
 export function getSettings(): UserSettings {
   if (!isClient()) return DEFAULT_SETTINGS
   try {
     const raw = localStorage.getItem(SETTINGS_KEY)
     if (!raw) return DEFAULT_SETTINGS
     const parsed = JSON.parse(raw) as Partial<UserSettings>
-    return { ...DEFAULT_SETTINGS, ...parsed }
+    return {
+      ...DEFAULT_SETTINGS,
+      ...parsed,
+      userType: migrateUserType(parsed.userType),
+    }
   } catch {
     return DEFAULT_SETTINGS
   }

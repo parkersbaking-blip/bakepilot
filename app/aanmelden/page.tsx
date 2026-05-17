@@ -16,8 +16,8 @@ import {
 
 const SEGMENTS: { id: UserSegment; emoji: string; label: string }[] = [
   { id: 'hobby', emoji: '🏠', label: 'Hobby thuisbakker' },
-  { id: 'bijverdienste', emoji: '🛍️', label: 'Bijverdienste' },
-  { id: 'professioneel', emoji: '🥖', label: 'Professionele bakker' },
+  { id: 'kleinverkoop', emoji: '🛍️', label: 'Kleinverkoop' },
+  { id: 'bakkerij', emoji: '🥖', label: 'Bakkerij' },
 ]
 
 export default function AanmeldenPage() {
