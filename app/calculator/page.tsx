@@ -459,6 +459,32 @@ export default function CalculatorPage() {
                 <p className="text-muted text-xs mt-1">per stuk</p>
               </div>
 
+              {form.laborCostPerHour === 0 && form.marginPercentage === 0 && (
+                <div className="bg-warm-bg border border-warm/30 rounded-2xl p-4 flex items-start gap-3">
+                  <span className="text-xl flex-shrink-0">💡</span>
+                  <div className="text-sm leading-relaxed">
+                    <p className="text-warm font-bold mb-1">Dit is alleen de grondstofprijs</p>
+                    <p className="text-espresso text-xs">
+                      Zonder arbeidskosten en winstmarge zie je alleen wat de ingrediënten kosten. Bij een echte bakkerij
+                      ligt de verkoopprijs 2 tot 3 keer hoger. Vul arbeidskosten en marge in voor een realistische prijs.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {form.laborCostPerHour > 0 && form.marginPercentage === 0 && (
+                <div className="bg-warm-bg border border-warm/30 rounded-2xl p-4 flex items-start gap-3">
+                  <span className="text-xl flex-shrink-0">💡</span>
+                  <div className="text-sm leading-relaxed">
+                    <p className="text-warm font-bold mb-1">Geen winstmarge ingesteld</p>
+                    <p className="text-espresso text-xs">
+                      Je verkoopprijs dekt nu alleen de kosten. Bakkerijen rekenen
+                      meestal 30 tot 50% marge om winst te maken.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               <h2 className="text-espresso/70 text-xs font-semibold uppercase tracking-wider px-1">
                 Resultaten
               </h2>
