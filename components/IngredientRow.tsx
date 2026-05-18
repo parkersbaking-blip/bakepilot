@@ -59,6 +59,16 @@ function advancedHintFor(unit: Unit): string {
   return `Andere eenheid? (${others.join(', ')})`
 }
 
+// Voorbeelden per prijs-eenheid — getoond in de tip als gebruiker advanced opent
+const PRICE_UNIT_TIPS: Record<PriceUnit, string> = {
+  per_kg: 'meel, suiker, zout — basisingrediënten per kilo',
+  per_100g: 'boter, chocolade, noten, kruiden — vaak op verpakking',
+  per_g: 'saffraan, vanille — klein en duur',
+  per_liter: 'melk, water, olie — basisvloeistoffen',
+  per_100ml: 'slagroom, likeur, dure vloeistoffen',
+  per_stuk: 'eieren, citroenen — per stuk',
+}
+
 // Schaal de hoeveelheid om wanneer een gebruiker wisselt tussen gram↔kg of ml↔liter,
 // zodat de fysieke hoeveelheid hetzelfde blijft. Bv: 2000 gram → switch naar kg → 2 kg.
 function convertQuantity(qty: number, from: Unit, to: Unit): number {
@@ -188,9 +198,20 @@ export default function IngredientRow({
         </select>
       </div>
 
-      {/* Prijs — collapsed: gewoon één veld met €/kg suffix. Expanded: met dropdown */}
+      {/* Prijs — collapsed: gewoon één veld met €/kg suffix. Expanded: met dropdown + tip */}
       {showAdvanced && hasAdvancedOptions ? (
         <div className="space-y-2">
+          <div className="bg-warm/10 rounded-xl p-3 text-xs leading-relaxed">
+            <p className="text-warm font-bold mb-1.5">💡 Wanneer welke?</p>
+            <ul className="text-espresso space-y-1">
+              {PRICE_OPTIONS_BY_UNIT[ingredient.unit].map((p) => (
+                <li key={p.value}>
+                  <strong className="text-warm">{p.label}</strong>
+                  <span className="text-muted"> — {PRICE_UNIT_TIPS[p.value]}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
           <div className="grid grid-cols-2 gap-2">
             <input
               type="text"
