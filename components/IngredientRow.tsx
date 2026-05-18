@@ -127,6 +127,34 @@ export default function IngredientRow({
       ? calcIngredientCost(ingredient, ingredient.quantity)
       : 0
 
+  // Omrekening naar standaard-eenheid (€/kg of €/L) — helpt fouten zoals "€2,19 per 100g" voor bloem zichtbaar maken
+  let perStandardLabel = ''
+  if (ingredient.pricePerUnit > 0 && !isUsingDefaultPriceUnit) {
+    if (currentPriceUnit === 'per_100g') {
+      perStandardLabel = `= ${formatCurrency(ingredient.pricePerUnit * 10)}/kg`
+    } else if (currentPriceUnit === 'per_g') {
+      perStandardLabel = `= ${formatCurrency(ingredient.pricePerUnit * 1000)}/kg`
+    } else if (currentPriceUnit === 'per_100ml') {
+      perStandardLabel = `= ${formatCurrency(ingredient.pricePerUnit * 10)}/L`
+    }
+  }
+
+  // Sanity check: is dit ingrediënt extreem duur t.o.v. realistische supermarktprijs?
+  // Drempel: >€20/kg of >€20/L voor basisingrediënten suggereert vaak een verkeerde prijs-eenheid.
+  // (Echte uitzonderingen: vanille, saffraan, truffel — die zijn duur per g)
+  let perKgPrice = 0
+  if (ingredient.pricePerUnit > 0) {
+    switch (currentPriceUnit) {
+      case 'per_kg': perKgPrice = ingredient.pricePerUnit; break
+      case 'per_100g': perKgPrice = ingredient.pricePerUnit * 10; break
+      case 'per_g': perKgPrice = ingredient.pricePerUnit * 1000; break
+      case 'per_liter': perKgPrice = ingredient.pricePerUnit; break
+      case 'per_100ml': perKgPrice = ingredient.pricePerUnit * 10; break
+    }
+  }
+  const looksTooExpensive =
+    perKgPrice > 50 && currentPriceUnit !== 'per_stuk' && currentPriceUnit !== 'per_g'
+
   return (
     <div className="bg-warm-bg/60 rounded-2xl p-4 space-y-3">
       <div className="flex items-center justify-between">
@@ -240,6 +268,11 @@ export default function IngredientRow({
               ))}
             </select>
           </div>
+          {perStandardLabel && (
+            <p className="text-warm text-xs font-medium tabular-nums">
+              {perStandardLabel}
+            </p>
+          )}
           <button
             type="button"
             onClick={handleCloseAdvanced}
@@ -277,6 +310,22 @@ export default function IngredientRow({
               {advancedHintFor(ingredient.unit)}
             </button>
           )}
+        </div>
+      )}
+
+      {/* Sanity-warning: lijkt deze prijs op een verkeerde eenheid? */}
+      {looksTooExpensive && (
+        <div className="bg-amber-50 border border-amber-300 rounded-xl p-3 flex items-start gap-2">
+          <span className="text-base flex-shrink-0">⚠️</span>
+          <div className="text-xs leading-relaxed">
+            <p className="text-amber-900 font-bold mb-0.5">
+              {formatCurrency(perKgPrice)}/kg lijkt veel
+            </p>
+            <p className="text-amber-800">
+              Controleer of je de juiste prijs-eenheid hebt gekozen. Bv. bloem
+              kost ~€2/kg, niet €2/100g.
+            </p>
+          </div>
         </div>
       )}
 
