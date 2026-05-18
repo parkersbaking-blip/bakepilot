@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { parseLocaleNumber } from '@/lib/parseNumber'
 
 interface NumberFieldProps {
   label?: string
@@ -10,12 +11,6 @@ interface NumberFieldProps {
   placeholder?: string
   allowDecimals?: boolean
   min?: number
-}
-
-function parseLocaleNumber(raw: string): number {
-  const normalized = raw.replace(',', '.')
-  const n = parseFloat(normalized)
-  return isNaN(n) ? 0 : n
 }
 
 export default function NumberField({

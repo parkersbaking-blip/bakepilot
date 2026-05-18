@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import type { Ingredient, Unit, PriceUnit } from '@/lib/types'
 import { calcIngredientCost, formatCurrency } from '@/lib/calculations'
+import { parseLocaleNumber } from '@/lib/parseNumber'
 
 interface IngredientRowProps {
   ingredient: Ingredient
@@ -10,12 +11,6 @@ interface IngredientRowProps {
   onChange: (id: string, field: keyof Ingredient, value: string | number) => void
   onRemove: (id: string) => void
   canRemove: boolean
-}
-
-function parseLocaleNumber(raw: string): number {
-  const normalized = raw.replace(',', '.')
-  const n = parseFloat(normalized)
-  return isNaN(n) ? 0 : n
 }
 
 const UNIT_OPTIONS: { value: Unit; label: string }[] = [
