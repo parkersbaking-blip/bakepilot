@@ -174,11 +174,14 @@ export default function CalculatorPage() {
     setIngredients((prev) => [...prev, newIngredient()])
   }
 
+  const [confirmReset, setConfirmReset] = useState(false)
+
   const handleReset = () => {
     setForm(DEFAULT_FORM)
     setIngredients([newIngredient()])
     setResult(null)
     setSaved(false)
+    setConfirmReset(false)
   }
 
   const handleSave = () => {
@@ -530,13 +533,33 @@ export default function CalculatorPage() {
                   >
                     {saved ? '✓ Opgeslagen' : 'Opslaan'}
                   </Button>
-                  <Button
-                    variant="secondary"
-                    size="md"
-                    onClick={handleReset}
-                  >
-                    Wissen
-                  </Button>
+                  {confirmReset ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-espresso">Weet je het zeker?</span>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={handleReset}
+                      >
+                        Ja
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => setConfirmReset(false)}
+                      >
+                        Nee
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      variant="secondary"
+                      size="md"
+                      onClick={() => setConfirmReset(true)}
+                    >
+                      Wissen
+                    </Button>
+                  )}
                 </div>
                 <button
                   onClick={handleSaveAsRecipe}
