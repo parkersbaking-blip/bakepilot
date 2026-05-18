@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import Header from '@/components/Header'
 import Button from '@/components/Button'
@@ -16,6 +17,7 @@ import {
   getSelectedRecipe,
   clearSelectedRecipe,
   saveCalculation,
+  getSavedCalculations,
   getSelectedCalculation,
   clearSelectedCalculation,
 } from '@/lib/storage'
@@ -59,6 +61,7 @@ const YIELD_HINT: Partial<Record<NonNullable<UserType>, string>> = {
 }
 
 export default function CalculatorPage() {
+  const router = useRouter()
   const [isNewRecipeMode, setIsNewRecipeMode] = useState(false)
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -76,6 +79,7 @@ export default function CalculatorPage() {
   const [proModalFeature, setProModalFeature] = useState('Download als PDF')
   const [recipeSaveFlash, setRecipeSaveFlash] = useState(false)
   const [userType, setUserType] = useState<UserType | undefined>(undefined)
+  const [savedCount, setSavedCount] = useState(0)
 
   const flourInRecipe = detectFlourGrams(ingredients)
 
@@ -94,6 +98,7 @@ export default function CalculatorPage() {
     const savedCalc = getSelectedCalculation()
     const recipe = getSelectedRecipe()
     setUserType(settings.userType)
+    setSavedCount(getSavedCalculations().length)
 
     // Prioriteit: opgeslagen berekening → recept → settings
     if (savedCalc) {
@@ -195,6 +200,7 @@ export default function CalculatorPage() {
     }
     saveCalculation(calc)
     setSaved(true)
+    setSavedCount(getSavedCalculations().length)
     setTimeout(() => setSaved(false), 2000)
   }
 
@@ -246,14 +252,30 @@ export default function CalculatorPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
         >
-          <h1 className="text-espresso text-2xl font-bold">
-            {isNewRecipeMode ? 'Nieuw recept' : 'Berekening'}
-          </h1>
-          <p className="text-muted text-sm mt-1">
-            {isNewRecipeMode
-              ? 'Vul ingrediënten in en klik onderaan op "Opslaan als eigen recept"'
-              : 'Vul je recept in voor een kostprijs berekening'}
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-espresso text-2xl font-bold">
+                {isNewRecipeMode ? 'Nieuw recept' : 'Berekening'}
+              </h1>
+              <p className="text-muted text-sm mt-1">
+                {isNewRecipeMode
+                  ? 'Vul ingrediënten in en klik onderaan op "Opslaan als eigen recept"'
+                  : 'Vul je recept in voor een kostprijs berekening'}
+              </p>
+            </div>
+            {savedCount > 0 && !isNewRecipeMode && (
+              <button
+                onClick={() => router.push('/berekeningen')}
+                className="flex items-center gap-1.5 bg-warm-bg text-warm text-xs font-bold px-3 py-2 rounded-full active:scale-95 transition-transform flex-shrink-0"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                  <polyline points="17 21 17 13 7 13 7 21" />
+                </svg>
+                {savedCount}
+              </button>
+            )}
+          </div>
         </motion.div>
 
         {isNewRecipeMode && (
