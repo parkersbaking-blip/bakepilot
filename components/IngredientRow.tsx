@@ -59,6 +59,18 @@ function advancedHintFor(unit: Unit): string {
   return `Andere eenheid? (${others.join(', ')})`
 }
 
+// Schaal de hoeveelheid om wanneer een gebruiker wisselt tussen gram↔kg of ml↔liter,
+// zodat de fysieke hoeveelheid hetzelfde blijft. Bv: 2000 gram → switch naar kg → 2 kg.
+function convertQuantity(qty: number, from: Unit, to: Unit): number {
+  if (qty === 0 || from === to) return qty
+  if (from === 'gram' && to === 'kg') return qty / 1000
+  if (from === 'kg' && to === 'gram') return qty * 1000
+  if (from === 'ml' && to === 'liter') return qty / 1000
+  if (from === 'liter' && to === 'ml') return qty * 1000
+  // Andere overgangen (bv. naar/van 'stuk', of gram ↔ ml): geen conversie, gebruiker bedoelt iets anders
+  return qty
+}
+
 const inputClass = "w-full bg-white border border-warm-bg rounded-xl px-3 py-2.5 text-espresso placeholder-muted/60 focus:outline-none focus:border-warm focus:ring-1 focus:ring-warm/30 text-sm"
 
 export default function IngredientRow({
@@ -156,7 +168,12 @@ export default function IngredientRow({
           value={ingredient.unit}
           onChange={(e) => {
             const newUnit = e.target.value as Unit
+            const oldUnit = ingredient.unit
+            const convertedQty = convertQuantity(ingredient.quantity, oldUnit, newUnit)
             onChange(ingredient.id, 'unit', newUnit)
+            if (convertedQty !== ingredient.quantity) {
+              onChange(ingredient.id, 'quantity', convertedQty)
+            }
             // Reset prijs-eenheid naar default bij eenheid-wissel — voorkomt verwarrende state
             onChange(ingredient.id, 'priceUnit', defaultPriceUnitFor(newUnit))
             setShowAdvanced(false)
