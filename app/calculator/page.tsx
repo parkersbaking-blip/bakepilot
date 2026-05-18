@@ -340,6 +340,7 @@ export default function CalculatorPage() {
                 onChange={updateIngredient}
                 onRemove={removeIngredient}
                 canRemove={ingredients.length > 1}
+                scaleFactor={form.baseYield > 0 ? form.desiredYield / form.baseYield : 1}
               />
             ))}
           </div>

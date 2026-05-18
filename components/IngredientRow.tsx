@@ -11,6 +11,7 @@ interface IngredientRowProps {
   onChange: (id: string, field: keyof Ingredient, value: string | number) => void
   onRemove: (id: string) => void
   canRemove: boolean
+  scaleFactor?: number
 }
 
 const UNIT_OPTIONS: { value: Unit; label: string }[] = [
@@ -89,6 +90,7 @@ export default function IngredientRow({
   onChange,
   onRemove,
   canRemove,
+  scaleFactor = 1,
 }: IngredientRowProps) {
   // Lokale string-state zodat tussenvormen ("0", "0.", "0,5") gewoon te typen zijn
   const [qtyText, setQtyText] = useState<string>(
@@ -121,10 +123,10 @@ export default function IngredientRow({
     }
   }
 
-  // Live preview van de kostprijs voor dit ingrediënt (op basis-hoeveelheid, niet geschaald)
+  const scaledQty = ingredient.quantity * scaleFactor
   const previewCost =
     ingredient.quantity > 0 && ingredient.pricePerUnit > 0
-      ? calcIngredientCost(ingredient, ingredient.quantity)
+      ? calcIngredientCost(ingredient, scaledQty)
       : 0
 
   // Omrekening naar standaard-eenheid (€/kg of €/L) — helpt fouten zoals "€2,19 per 100g" voor bloem zichtbaar maken
@@ -333,11 +335,20 @@ export default function IngredientRow({
 
       {/* Live cost preview */}
       {previewCost > 0 && (
-        <div className="bg-white/60 border border-warm-bg rounded-xl px-3 py-2 flex items-center justify-between">
-          <span className="text-muted text-xs">Kosten dit ingrediënt</span>
-          <span className="text-warm text-sm font-semibold tabular-nums">
-            {formatCurrency(previewCost)}
-          </span>
+        <div className="bg-white/60 border border-warm-bg rounded-xl px-3 py-2">
+          <div className="flex items-center justify-between">
+            <span className="text-muted text-xs">
+              {scaleFactor !== 1 ? `Kosten (×${scaleFactor.toFixed(2)})` : 'Kosten dit ingrediënt'}
+            </span>
+            <span className="text-warm text-sm font-semibold tabular-nums">
+              {formatCurrency(previewCost)}
+            </span>
+          </div>
+          {scaleFactor !== 1 && (
+            <p className="text-muted text-[11px] mt-1">
+              {ingredient.quantity} {ingredient.unit} → {Number(scaledQty.toFixed(2))} {ingredient.unit}
+            </p>
+          )}
         </div>
       )}
     </div>
