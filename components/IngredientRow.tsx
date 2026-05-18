@@ -140,8 +140,10 @@ export default function IngredientRow({
   }
 
   // Sanity check: is dit ingrediënt extreem duur t.o.v. realistische supermarktprijs?
-  // Drempel: >€20/kg of >€20/L voor basisingrediënten suggereert vaak een verkeerde prijs-eenheid.
-  // (Echte uitzonderingen: vanille, saffraan, truffel — die zijn duur per g)
+  // Drempel: >€15/kg of >€15/L is een sterke aanwijzing voor een verkeerde prijs-eenheid
+  // (bv. €2/100g geselecteerd terwijl je €2/kg bedoelde). Premium-ingrediënten zoals
+  // boter (€8-12/kg) en chocolade callets (€10-15/kg) blijven onder de drempel.
+  // €/g uitzonderingen: vanille en saffraan zijn legitiem duur, dus slaan we over.
   let perKgPrice = 0
   if (ingredient.pricePerUnit > 0) {
     switch (currentPriceUnit) {
@@ -153,7 +155,7 @@ export default function IngredientRow({
     }
   }
   const looksTooExpensive =
-    perKgPrice > 50 && currentPriceUnit !== 'per_stuk' && currentPriceUnit !== 'per_g'
+    perKgPrice > 15 && currentPriceUnit !== 'per_stuk' && currentPriceUnit !== 'per_g'
 
   return (
     <div className="bg-warm-bg/60 rounded-2xl p-4 space-y-3">
@@ -315,15 +317,15 @@ export default function IngredientRow({
 
       {/* Sanity-warning: lijkt deze prijs op een verkeerde eenheid? */}
       {looksTooExpensive && (
-        <div className="bg-amber-50 border border-amber-300 rounded-xl p-3 flex items-start gap-2">
+        <div className="bg-warm-bg border-2 border-warm/40 rounded-xl p-3 flex items-start gap-2">
           <span className="text-base flex-shrink-0">⚠️</span>
           <div className="text-xs leading-relaxed">
-            <p className="text-amber-900 font-bold mb-0.5">
+            <p className="text-warm font-bold mb-0.5">
               {formatCurrency(perKgPrice)}/kg lijkt veel
             </p>
-            <p className="text-amber-800">
-              Controleer of je de juiste prijs-eenheid hebt gekozen. Bv. bloem
-              kost ~€2/kg, niet €2/100g.
+            <p className="text-espresso">
+              Controleer of de prijs-eenheid klopt. Bv. bloem kost
+              ~€2/kg, niet €2/100g.
             </p>
           </div>
         </div>
